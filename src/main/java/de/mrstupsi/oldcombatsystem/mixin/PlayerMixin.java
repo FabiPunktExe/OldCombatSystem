@@ -30,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Player.class)
+@Mixin(value = Player.class, priority = 500)
 public abstract class PlayerMixin extends LivingEntity {
     @Shadow public abstract float getAttackStrengthScale(float p_36404_);
 
@@ -56,8 +56,9 @@ public abstract class PlayerMixin extends LivingEntity {
      * @author
      * @reason
      */
-    @Overwrite
-    public void attack(Entity entity) {
+    @Inject(at = @At("HEAD"), method = "attack", cancellable = true)
+    public void attack(Entity entity, CallbackInfo ci) {
+        ci.cancel();
         Player self = (Player) ((Object) this);
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(self, entity)) return;
         if (entity.isAttackable()) {

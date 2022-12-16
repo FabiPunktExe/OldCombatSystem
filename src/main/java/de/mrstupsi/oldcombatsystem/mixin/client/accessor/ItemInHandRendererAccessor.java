@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(ItemInHandRenderer.class)
+@Mixin(value = ItemInHandRenderer.class, priority = 1500)
 public interface ItemInHandRendererAccessor {
     @Invoker void callApplyEatTransform(PoseStack matrixStackIn, float partialTicks, HumanoidArm handIn, ItemStack stack);
 
